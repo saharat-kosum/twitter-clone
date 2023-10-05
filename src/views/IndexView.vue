@@ -1,10 +1,6 @@
 <template>
-  <div
-    class="bg-black text-white w-screen lg:h-screen"
-    :style="{
-      minHeight: '100vh',
-    }"
-  >
+  <div class="w-screen lg:h-screen min-h-screen">
+    <LoadingComponent :isOpen="isLoadingOpen" />
     <div class="container mx-auto flex flex-col lg:flex-row w-full h-full">
       <div class="flex-1 flex justify-center items-center my-12">
         <img
@@ -65,14 +61,20 @@
 <script lang="ts">
 import CreateAccountComponent from "../components/CreateAccountComponent.vue";
 import SignInComponent from "../components/SignInComponent.vue";
+import LoadingComponent from "../components/Loading.vue";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "IndexPage",
-  components: { SignInComponent, CreateAccountComponent },
+  components: {
+    SignInComponent,
+    CreateAccountComponent,
+    LoadingComponent,
+  },
   setup() {
     const isSingInOpen = ref(false);
     const isCreateOpen = ref(false);
+    const isLoadingOpen = ref(false);
 
     const openSignInModal = () => {
       isSingInOpen.value = !isSingInOpen.value;
@@ -82,7 +84,13 @@ export default defineComponent({
       isCreateOpen.value = !isCreateOpen.value;
     };
 
-    return { openSignInModal, isSingInOpen, isCreateOpen, openCreateModal };
+    return {
+      openSignInModal,
+      isSingInOpen,
+      isCreateOpen,
+      openCreateModal,
+      isLoadingOpen,
+    };
   },
 });
 </script>

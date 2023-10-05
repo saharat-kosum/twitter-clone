@@ -132,6 +132,7 @@ export default defineComponent({
       onToggle,
       isLoginFailed,
       user,
+      logInHandle,
     };
   },
 });

@@ -13,5 +13,9 @@ module.exports = {
     extend: {},
   },
   plugins: [require("flowbite/plugin")],
-  content: ["./node_modules/flowbite/**/*.js"],
+  content: [
+    "./node_modules/flowbite/**/*.js",
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
 };

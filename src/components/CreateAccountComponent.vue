@@ -178,16 +178,6 @@ import { parseISO, format } from "date-fns";
 import axios from "axios";
 import FileDropzone from "../components/DropZone.vue";
 
-const defaultUserData: UserType = {
-  dateOfBirth: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  location: "",
-  occupation: "",
-};
-
 export default defineComponent({
   name: "SignInComponent",
   components: { FileDropzone },
@@ -201,13 +191,23 @@ export default defineComponent({
       if (props.modalToggle) {
         props.modalToggle();
       }
+      clearImage();
+      handleReset();
     };
 
     const prefixURL = process.env.VUE_APP_PREFIX_URL;
     const imageFile = ref<File | null>(null);
     const imageUrl = ref("");
     const dateOfBirth = ref("");
-    const userData = ref<UserType>(defaultUserData);
+    const userData = ref<UserType>({
+      dateOfBirth: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      location: "",
+      occupation: "",
+    });
     watch(dateOfBirth, (newDateOfBirth) => {
       if (newDateOfBirth) {
         const parsedDate = parseISO(newDateOfBirth);
@@ -233,7 +233,13 @@ export default defineComponent({
     const handleReset = () => {
       imageFile.value = null;
       imageUrl.value = "";
-      userData.value = defaultUserData;
+      userData.value.dateOfBirth = "";
+      userData.value.firstName = "";
+      userData.value.lastName = "";
+      userData.value.email = "";
+      userData.value.password = "";
+      userData.value.location = "";
+      userData.value.occupation = "";
       dateOfBirth.value = "";
     };
 
@@ -292,10 +298,10 @@ export default defineComponent({
 }
 
 .fade-enter-active {
-  transition: opacity 500ms ease-out;
+  transition: opacity 100ms ease-out;
 }
 .fade-leave-active {
-  transition: opacity 500ms ease-out;
+  transition: opacity 150ms ease-out;
 }
 
 .upload .active {
