@@ -18,7 +18,7 @@
           <div>
             <div class="p-5">
               <h1 class="text-3xl my-3">Sign In</h1>
-              <form>
+              <form @submit.prevent="logInHandle">
                 <div class="mb-6">
                   <label
                     for="email"
@@ -104,6 +104,7 @@ export default defineComponent({
       if (props.modalToggle) {
         props.modalToggle();
       }
+      resetHandle();
     };
 
     const saveToken = (value: string) => {
@@ -113,8 +114,12 @@ export default defineComponent({
 
     const logInHandle = async () => {
       try {
-        const response = await axios.post(`${prefixURL}/auth/login`, user);
+        const response = await axios.post(
+          `${prefixURL}/auth/login`,
+          user.value
+        );
         const data = await response.data;
+        console.log(response);
         saveToken(data.token);
       } catch (error) {
         console.error(error);
@@ -127,18 +132,31 @@ export default defineComponent({
       }
     };
 
+    const resetHandle = () => {
+      user.value.email = "";
+      user.value.password = "";
+    };
+
     return {
       isModalVisible,
       onToggle,
       isLoginFailed,
       user,
       logInHandle,
+      resetHandle,
     };
   },
 });
 </script>
 
 <style scoped>
+.fade-enter-from {
+  opacity: 0;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
 .fade-enter {
   opacity: 0;
 }
@@ -147,9 +165,9 @@ export default defineComponent({
 }
 
 .fade-enter-active {
-  transition: opacity 500ms ease-out;
+  transition: opacity 200ms ease-out;
 }
 .fade-leave-active {
-  transition: opacity 500ms ease-out;
+  transition: opacity 200ms ease-out;
 }
 </style>

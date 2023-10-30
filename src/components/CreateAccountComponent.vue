@@ -4,10 +4,10 @@
       <div v-if="isModalVisible">
         <div
           @click="onToggle"
-          class="fixed inset-0 bg-gray-500 opacity-50 z-10"
+          class="fixed inset-0 bg-gray-500 opacity-50"
         ></div>
         <div
-          class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg p-3 mx-auto rounded-xl shadow-lg bg-black"
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg p-3 mx-auto rounded-xl shadow-lg bg-black"
         >
           <button
             @click="onToggle"
@@ -18,7 +18,7 @@
           <div>
             <div class="p-5">
               <h1 class="text-3xl my-3">Create your account</h1>
-              <form>
+              <form @submit.prevent="signUpHandle">
                 <div class="relative z-0 w-full mb-6 group">
                   <input
                     type="email"
@@ -184,6 +184,8 @@ export default defineComponent({
   props: {
     modalToggle: Function,
     isOpen: Boolean,
+    alertToggle: Function,
+    successToggle: Function,
   },
   setup(props) {
     const isModalVisible = computed(() => props.isOpen);
@@ -265,10 +267,24 @@ export default defineComponent({
           }
         );
         if (response.status === 200) {
+          if (props.successToggle) {
+            props.successToggle(true);
+          }
           handleReset();
+        } else {
+          if (props.successToggle) {
+            props.successToggle(false);
+          }
         }
       } catch (error) {
         console.error(error);
+        if (props.successToggle) {
+          props.successToggle(false);
+        }
+      } finally {
+        if (props.alertToggle) {
+          props.alertToggle();
+        }
       }
     };
 
@@ -290,6 +306,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.fade-enter-from {
+  opacity: 0;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
 .fade-enter {
   opacity: 0;
 }
@@ -298,10 +321,10 @@ export default defineComponent({
 }
 
 .fade-enter-active {
-  transition: opacity 100ms ease-out;
+  transition: opacity 200ms ease-out;
 }
 .fade-leave-active {
-  transition: opacity 150ms ease-out;
+  transition: opacity 200ms ease-out;
 }
 
 .upload .active {
