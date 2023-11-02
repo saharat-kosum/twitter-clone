@@ -1,6 +1,13 @@
 <template>
   <div class="flex py-3 px-5 border-solid border-b border-[#2F3336]">
     <img
+      v-if="userData?.picturePath"
+      class="objectFit w-9 h-9 me-2 rounded-full mt-1"
+      alt="profile"
+      :src="userData?.picturePath"
+    />
+    <img
+      v-else
       class="objectFit w-9 h-9 me-2 rounded-full mt-1"
       alt="profile"
       :src="profilePicture"
@@ -55,17 +62,20 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-
-const count = ref<number>(0);
-const profilePicture = process.env.VUE_APP_PROFILE_IMG;
-</script>
-
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType, ref } from "vue";
+import { UserType } from "../type";
 export default defineComponent({
   name: "CreatePost",
+  props: {
+    userData: Object as PropType<UserType>,
+  },
+  setup(props) {
+    const count = ref<number>(0);
+    const profilePicture = process.env.VUE_APP_PROFILE_IMG;
+
+    return { count, profilePicture, props };
+  },
 });
 </script>
 

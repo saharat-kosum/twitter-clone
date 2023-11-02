@@ -82,7 +82,6 @@
 <script lang="ts">
 import axios, { AxiosError } from "axios";
 import { defineComponent, computed, ref } from "vue";
-import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "SignInComponent",
@@ -91,7 +90,6 @@ export default defineComponent({
     isOpen: Boolean,
   },
   setup(props) {
-    const router = useRouter();
     const isModalVisible = computed(() => props.isOpen);
     const prefixURL = process.env.VUE_APP_PREFIX_URL;
     const isLoginFailed = ref(false);
@@ -109,7 +107,7 @@ export default defineComponent({
 
     const saveToken = (value: string) => {
       sessionStorage.setItem("userToken", value);
-      router.push("/home");
+      window.location.replace("/home");
     };
 
     const logInHandle = async () => {

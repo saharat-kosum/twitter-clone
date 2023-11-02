@@ -6,6 +6,13 @@
     />
     <div class="flex justify-between items-center mt-3 mx-3.5 relative mb-12">
       <img
+        v-if="friendData?.picturePath"
+        class="objectFit w-[135px] h-[135px] me-2 rounded-full mt-1 absolute -top-20"
+        alt="profile"
+        :src="friendData.picturePath"
+      />
+      <img
+        v-else
         class="objectFit w-[135px] h-[135px] me-2 rounded-full mt-1 absolute -top-20"
         alt="profile"
         :src="profilePicture"
@@ -26,10 +33,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import { UserType } from "../type";
 
 export default defineComponent({
   name: "ProfileHeader",
+  props: {
+    friendData: Object as PropType<UserType>,
+  },
   setup() {
     const coverImg = process.env.VUE_APP_COVER_IMG;
     const profilePicture = process.env.VUE_APP_PROFILE_IMG;
