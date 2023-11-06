@@ -1,23 +1,27 @@
 <template>
   <div class="flex py-3 px-5 border-solid border-b border-[#2F3336]">
-    <img
-      v-if="post?.userPicturePath"
-      class="objectFit w-9 h-9 me-2 rounded-full mt-1"
-      alt="profile"
-      :src="post?.userPicturePath"
-    />
-    <img
-      v-else
-      class="objectFit w-9 h-9 me-2 rounded-full mt-1"
-      alt="profile"
-      :src="profilePicture"
-    />
+    <router-link :to="'/profile/' + post.userId">
+      <img
+        v-if="post?.userPicturePath"
+        class="object-cover w-9 h-9 me-2 rounded-full mt-1"
+        alt="profile"
+        :src="prefixImg + post?.userPicturePath"
+      />
+      <img
+        v-else
+        class="object-cover w-9 h-9 me-2 rounded-full mt-1"
+        alt="profile"
+        :src="profilePicture"
+      />
+    </router-link>
     <div class="flex-1">
       <div class="flex mx-2 items-center justify-between">
         <div class="flex gap-2">
-          <div class="font-semibold">
-            {{ post?.firstName }} {{ post?.lastName }}
-          </div>
+          <router-link :to="'/profile/' + post.userId">
+            <div class="font-semibold">
+              {{ post?.firstName + " " + post?.lastName }}
+            </div>
+          </router-link>
           <div class="text-[#71767C]">{{ createDate }}</div>
         </div>
         <div
@@ -27,7 +31,11 @@
         </div>
       </div>
       <div class="ms-2">{{ post?.description }}</div>
-      <img v-if="post?.picturePath" :src="post.picturePath" />
+      <img
+        class="mt-2 rounded-3xl border-solid border border-[#2F3336]"
+        v-if="post?.picturePath"
+        :src="prefixImg + post.picturePath"
+      />
       <div class="flex items-center">
         <div class="flex w-full text-[#71767C] justify-between">
           <div
@@ -74,10 +82,14 @@ import { PostType } from "../type";
 export default defineComponent({
   name: "PostComponent",
   props: {
-    post: Object as PropType<PostType>,
+    post: {
+      type: Object as PropType<PostType>,
+      required: true,
+    },
   },
   setup(props) {
     const profilePicture = process.env.VUE_APP_PROFILE_IMG;
+    const prefixImg = process.env.VUE_APP_PREFIX_URL_IMG;
     const createDate = ref("");
 
     const formatDate = (date: Date) => {
@@ -100,7 +112,7 @@ export default defineComponent({
       { immediate: true }
     );
 
-    return { profilePicture, props, createDate };
+    return { profilePicture, props, createDate, prefixImg };
   },
 });
 </script>

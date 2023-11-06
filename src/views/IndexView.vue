@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen lg:h-screen min-h-screen">
+  <div class="w-screen lg:h-screen min-h-screen relative">
     <LoadingComponent :isOpen="isLoadingOpen" />
     <div class="container mx-auto flex flex-col lg:flex-row w-full h-full">
       <div class="flex-1 flex justify-center items-center my-12">
@@ -52,9 +52,12 @@
         <CreateAccountComponent
           :modalToggle="openCreateModal"
           :isOpen="isCreateOpen"
+          :alertToggle="onAlert"
+          :successToggle="setIsSuccess"
         />
       </div>
     </div>
+    <AlertComponent :isAlert="isAlert" :isSuccess="isSuccess" />
   </div>
 </template>
 
@@ -62,7 +65,8 @@
 import CreateAccountComponent from "../components/CreateAccountComponent.vue";
 import SignInComponent from "../components/SignInComponent.vue";
 import LoadingComponent from "../components/Loading.vue";
-import { defineComponent, ref } from "vue";
+import AlertComponent from "../components/Alert.vue";
+import { defineComponent, onBeforeUnmount, ref, watch } from "vue";
 
 export default defineComponent({
   name: "IndexPage",
@@ -70,11 +74,14 @@ export default defineComponent({
     SignInComponent,
     CreateAccountComponent,
     LoadingComponent,
+    AlertComponent,
   },
   setup() {
     const isSingInOpen = ref(false);
     const isCreateOpen = ref(false);
     const isLoadingOpen = ref(false);
+    const isSuccess = ref(false);
+    const isAlert = ref(false);
 
     const openSignInModal = () => {
       isSingInOpen.value = !isSingInOpen.value;
@@ -84,12 +91,39 @@ export default defineComponent({
       isCreateOpen.value = !isCreateOpen.value;
     };
 
+    const onAlert = () => {
+      isAlert.value = true;
+    };
+
+    const setIsSuccess = (prop: boolean) => {
+      isSuccess.value = prop;
+    };
+
+    // eslint-disable-next-line
+    let timer = ref<any>(null);
+    watch(isAlert, (newVal) => {
+      if (newVal) {
+        timer = setTimeout(() => {
+          isAlert.value = false;
+        }, 2000);
+      } else {
+        clearTimeout(timer.value);
+      }
+    });
+    onBeforeUnmount(() => {
+      clearTimeout(timer.value);
+    });
+
     return {
       openSignInModal,
       isSingInOpen,
       isCreateOpen,
       openCreateModal,
       isLoadingOpen,
+      isAlert,
+      isSuccess,
+      setIsSuccess,
+      onAlert,
     };
   },
 });
