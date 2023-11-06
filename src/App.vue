@@ -1,93 +1,158 @@
 <template>
   <div
-    class="flex justify-center bg-black text-white w-screen lg:h-screen min-h-screen"
+    class="flex justify-center bg-black text-white min-h-screen"
+    :class="{ 'w-screen': !showNavbar }"
   >
-    <nav v-if="showNavbar" class="flex flex-col justify-between py-2">
-      <div>
-        <router-link to="/home">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full">
-            <img class="w-7" src="../src/assets/logo-white.png" />
-          </div>
-        </router-link>
-        <router-link to="/home">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-house"></i>
-            <span class="mx-4">Home</span>
-          </div>
-        </router-link>
-        <router-link to="#">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-search"></i>
-            <span class="mx-4">Explore</span>
-          </div>
-        </router-link>
-        <router-link to="#">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-bell"></i>
-            <span class="mx-4">Notifications</span>
-          </div>
-        </router-link>
-        <router-link to="#">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-envelope"></i>
-            <span class="mx-4">Messages</span>
-          </div>
-        </router-link>
-        <router-link to="#">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-filter-square"></i>
-            <span class="mx-4">Lists</span>
-          </div>
-        </router-link>
-        <router-link to="#">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-bookmark"></i>
-            <span class="mx-4">Bookmarks</span>
-          </div>
-        </router-link>
-        <router-link to="#">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-people"></i>
-            <span class="mx-4">Communities</span>
-          </div>
-        </router-link>
-        <router-link to="#">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-twitter-x"></i>
-            <span class="mx-4">Premium</span>
-          </div>
-        </router-link>
-        <router-link to="/profile/:id">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-person"></i>
-            <span class="mx-4">Profile</span>
-          </div>
-        </router-link>
-        <router-link to="#">
-          <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
-            <i class="bi bi-three-dots"></i>
-            <span class="mx-4">More</span>
-          </div>
-        </router-link>
-      </div>
-      <div
-        class="flex justify-between hover:bg-white/[0.13] hover:cursor-pointer p-3 rounded-full text-xl"
+    <LoadingComponent :isOpen="isLoadingOpen" />
+    <div :class="{ 'relative w-64': showNavbar }">
+      <nav
+        v-if="showNavbar && isLogin"
+        class="flex flex-col justify-between py-2 w-64 fixed h-screen"
       >
-        <div>Profile</div>
-        <i class="bi bi-three-dots"></i>
-      </div>
-    </nav>
+        <div>
+          <router-link to="/home">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full">
+              <img class="w-7" src="../src/assets/logo-white.png" />
+            </div>
+          </router-link>
+          <router-link to="/home">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-house"></i>
+              <span class="mx-4">Home</span>
+            </div>
+          </router-link>
+          <router-link to="#">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-search"></i>
+              <span class="mx-4">Explore</span>
+            </div>
+          </router-link>
+          <router-link to="#">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-bell"></i>
+              <span class="mx-4">Notifications</span>
+            </div>
+          </router-link>
+          <router-link to="#">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-envelope"></i>
+              <span class="mx-4">Messages</span>
+            </div>
+          </router-link>
+          <router-link to="#">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-filter-square"></i>
+              <span class="mx-4">Lists</span>
+            </div>
+          </router-link>
+          <router-link to="#">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-bookmark"></i>
+              <span class="mx-4">Bookmarks</span>
+            </div>
+          </router-link>
+          <router-link to="#">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-people"></i>
+              <span class="mx-4">Communities</span>
+            </div>
+          </router-link>
+          <router-link to="#">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-twitter-x"></i>
+              <span class="mx-4">Premium</span>
+            </div>
+          </router-link>
+          <router-link :to="'/profile/' + userData?._id">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-person"></i>
+              <span class="mx-4">Profile</span>
+            </div>
+          </router-link>
+          <router-link to="#">
+            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+              <i class="bi bi-three-dots"></i>
+              <span class="mx-4">More</span>
+            </div>
+          </router-link>
+        </div>
+        <div
+          class="flex justify-between hover:bg-white/[0.13] hover:cursor-pointer p-3 rounded-full text-xl items-center"
+        >
+          <div class="capitalize hover:cursor-pointer flex items-center">
+            <img
+              v-if="userData?.picturePath"
+              class="object-cover w-9 h-9 me-3 rounded-full"
+              alt="profile"
+              :src="prefixImg + userData?.picturePath"
+            />
+            <img
+              v-else
+              class="object-cover w-9 h-9 me-3 rounded-full"
+              alt="profile"
+              :src="profilePicture"
+            />
+            {{ userData?.firstName + " " + userData?.lastName }}
+          </div>
+          <i class="bi bi-three-dots"></i>
+        </div>
+      </nav>
+    </div>
     <router-view />
   </div>
 </template>
 
 <script lang="ts">
 import "flowbite/dist/flowbite.min.js";
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { UserType } from "./type";
+import axios from "axios";
 
 export default defineComponent({
   name: "App",
+  setup() {
+    const profilePicture = process.env.VUE_APP_PROFILE_IMG;
+    const prefixURL = process.env.VUE_APP_PREFIX_URL;
+    const prefixImg = process.env.VUE_APP_PREFIX_URL_IMG;
+    const userData = ref<UserType | undefined>(undefined);
+    const isLogin = ref(false);
+    const isLoadingOpen = ref(false);
+
+    onMounted(() => {
+      const token = getUserToken();
+      if (token) {
+        isLogin.value = true;
+        getUserDetail(token);
+      }
+    });
+
+    const getUserToken = () => {
+      const token = sessionStorage.getItem("userToken");
+      if (token && token.length > 0) {
+        return token;
+      }
+    };
+
+    const getUserDetail = async (token: string) => {
+      isLoadingOpen.value = true;
+      try {
+        const response = await axios.get(`${prefixURL}/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = response.data;
+        userData.value = data;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        isLoadingOpen.value = false;
+      }
+    };
+
+    return { profilePicture, isLogin, userData, isLoadingOpen, prefixImg };
+  },
   computed: {
     showNavbar() {
       return this.$route.path !== "/";

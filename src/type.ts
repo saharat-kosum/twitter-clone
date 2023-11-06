@@ -37,3 +37,8 @@ export interface CommentType {
   userPicturePath?: string;
   description: string;
 }
+
+export interface PostPayload {
+  userId?: string;
+  description?: string;
+}

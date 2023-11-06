@@ -138,12 +138,7 @@
                 </div>
                 <div v-if="imageFile" class="relative">
                   <i
-                    class="bi bi-x-lg hover-cursor absolute rounded-full p-2"
-                    style="
-                      background-color: rgba(255, 255, 255, 0.5);
-                      top: 25px;
-                      right: 10px;
-                    "
+                    class="bi bi-x-lg absolute rounded-full px-3 py-2 top-[25px] right-[10px] hover:cursor-pointer bg-black/[0.1]"
                     @click="clearImage"
                   ></i>
                   <img
