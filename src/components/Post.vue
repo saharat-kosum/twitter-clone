@@ -24,10 +24,24 @@
           </router-link>
           <div class="text-[#71767C]">{{ createDate }}</div>
         </div>
-        <div
-          class="rounded-full text-[#71767C] hover:cursor-pointer hover:text-[#1A8CD8]"
-        >
-          <i class="bi bi-three-dots"></i>
+        <div class="relative">
+          <div
+            class="rounded-full text-[#71767C] hover:cursor-pointer hover:text-[#1A8CD8]"
+            @click="toggleDropdown"
+            ref="dotsContainer"
+          >
+            <i class="bi bi-three-dots"></i>
+          </div>
+          <div
+            class="absolute right-0"
+            :class="{ hidden: !isDropdownOpen }"
+            ref="dropdownContainer"
+          >
+            <ul>
+              <li>item1</li>
+              <li>item2</li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="ms-2">{{ post?.description }}</div>
@@ -76,7 +90,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from "vue";
+import {
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  PropType,
+  ref,
+  watch,
+} from "vue";
 import { PostType } from "../type";
 
 export default defineComponent({
@@ -91,6 +112,32 @@ export default defineComponent({
     const profilePicture = process.env.VUE_APP_PROFILE_IMG;
     const prefixImg = process.env.VUE_APP_PREFIX_URL_IMG;
     const createDate = ref("");
+    const isDropdownOpen = ref(false);
+    const dotsContainer = ref<HTMLDivElement | null>(null);
+    const dropdownContainer = ref<HTMLDivElement | null>(null);
+
+    const toggleDropdown = () => {
+      isDropdownOpen.value = !isDropdownOpen.value;
+    };
+
+    const closeDropdownOnOutsideClick = (event: MouseEvent) => {
+      if (
+        dotsContainer.value &&
+        dropdownContainer.value &&
+        !dotsContainer.value.contains(event.target as Node) &&
+        !dropdownContainer.value.contains(event.target as Node)
+      ) {
+        isDropdownOpen.value = false;
+      }
+    };
+
+    onMounted(() => {
+      window.addEventListener("click", closeDropdownOnOutsideClick);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener("click", closeDropdownOnOutsideClick);
+    });
 
     const formatDate = (date: Date) => {
       return new Intl.DateTimeFormat("en-US", {
@@ -112,7 +159,16 @@ export default defineComponent({
       { immediate: true }
     );
 
-    return { profilePicture, props, createDate, prefixImg };
+    return {
+      profilePicture,
+      props,
+      createDate,
+      prefixImg,
+      isDropdownOpen,
+      toggleDropdown,
+      dotsContainer,
+      dropdownContainer,
+    };
   },
 });
 </script>
