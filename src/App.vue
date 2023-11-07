@@ -3,11 +3,10 @@
     class="flex justify-center bg-black text-white min-h-screen"
     :class="{ 'w-screen': !showNavbar }"
   >
-    <LoadingComponent :isOpen="isLoadingOpen" />
-    <div :class="{ 'relative w-64': showNavbar }">
+    <div :class="{ 'relative xl:w-64 w-14': showNavbar }">
       <nav
         v-if="showNavbar && isLogin"
-        class="flex flex-col justify-between py-2 w-64 fixed h-screen"
+        class="flex flex-col justify-between py-2 xl:w-64 fixed h-screen items-center"
       >
         <div>
           <router-link to="/home">
@@ -16,85 +15,125 @@
             </div>
           </router-link>
           <router-link to="/home">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-house"></i>
-              <span class="mx-4">Home</span>
+              <span class="mx-4 hidden xl:inline">Home</span>
             </div>
           </router-link>
           <router-link to="#">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-search"></i>
-              <span class="mx-4">Explore</span>
+              <span class="mx-4 hidden xl:inline">Explore</span>
             </div>
           </router-link>
           <router-link to="#">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-bell"></i>
-              <span class="mx-4">Notifications</span>
+              <span class="mx-4 hidden xl:inline">Notifications</span>
             </div>
           </router-link>
           <router-link to="#">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-envelope"></i>
-              <span class="mx-4">Messages</span>
+              <span class="mx-4 hidden xl:inline">Messages</span>
             </div>
           </router-link>
           <router-link to="#">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-filter-square"></i>
-              <span class="mx-4">Lists</span>
+              <span class="mx-4 hidden xl:inline">Lists</span>
             </div>
           </router-link>
           <router-link to="#">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-bookmark"></i>
-              <span class="mx-4">Bookmarks</span>
+              <span class="mx-4 hidden xl:inline">Bookmarks</span>
             </div>
           </router-link>
           <router-link to="#">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-people"></i>
-              <span class="mx-4">Communities</span>
+              <span class="mx-4 hidden xl:inline">Communities</span>
             </div>
           </router-link>
           <router-link to="#">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-twitter-x"></i>
-              <span class="mx-4">Premium</span>
+              <span class="mx-4 hidden xl:inline">Premium</span>
             </div>
           </router-link>
           <router-link :to="'/profile/' + userData?._id">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-person"></i>
-              <span class="mx-4">Profile</span>
+              <span class="mx-4 hidden xl:inline">Profile</span>
             </div>
           </router-link>
           <router-link to="#">
-            <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full text-xl">
+            <div
+              class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
+            >
               <i class="bi bi-three-dots"></i>
-              <span class="mx-4">More</span>
+              <span class="mx-4 hidden xl:inline">More</span>
             </div>
           </router-link>
         </div>
         <div
-          class="flex justify-between hover:bg-white/[0.13] hover:cursor-pointer p-3 rounded-full text-xl items-center"
+          class="rightBarWidth flex justify-between hover:bg-white/[0.13] hover:cursor-pointer p-3 rounded-full text-xl items-center"
         >
           <div class="capitalize hover:cursor-pointer flex items-center">
             <img
               v-if="userData?.picturePath"
-              class="object-cover w-9 h-9 me-3 rounded-full"
+              class="object-cover w-9 h-9 xl:me-3 rounded-full"
               alt="profile"
               :src="prefixImg + userData?.picturePath"
             />
             <img
               v-else
-              class="object-cover w-9 h-9 me-3 rounded-full"
+              class="object-cover w-9 h-9 xl:me-3 rounded-full"
               alt="profile"
               :src="profilePicture"
             />
-            {{ userData?.firstName + " " + userData?.lastName }}
+            <span class="hidden xl:inline">
+              {{ userData?.firstName + " " + userData?.lastName }}
+            </span>
           </div>
-          <i class="bi bi-three-dots"></i>
+          <div class="relative hidden xl:inline">
+            <div
+              class="rounded-full text-[#71767C] hover:cursor-pointer hover:text-[#1A8CD8]"
+              @click="toggleDropdown"
+              ref="dotsContainer"
+            >
+              <i class="bi bi-three-dots"></i>
+            </div>
+            <div
+              class="absolute right-0 -top-20"
+              :class="{ hidden: !isDropdownOpen }"
+              ref="dropdownContainer"
+            >
+              <ul>
+                <li>item1</li>
+                <li>item2</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </nav>
     </div>
@@ -104,7 +143,7 @@
 
 <script lang="ts">
 import "flowbite/dist/flowbite.min.js";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { UserType } from "./type";
 import axios from "axios";
@@ -118,6 +157,32 @@ export default defineComponent({
     const userData = ref<UserType | undefined>(undefined);
     const isLogin = ref(false);
     const isLoadingOpen = ref(false);
+    const isDropdownOpen = ref(false);
+    const dotsContainer = ref<HTMLDivElement | null>(null);
+    const dropdownContainer = ref<HTMLDivElement | null>(null);
+
+    const toggleDropdown = () => {
+      isDropdownOpen.value = !isDropdownOpen.value;
+    };
+
+    const closeDropdownOnOutsideClick = (event: MouseEvent) => {
+      if (
+        dotsContainer.value &&
+        dropdownContainer.value &&
+        !dotsContainer.value.contains(event.target as Node) &&
+        !dropdownContainer.value.contains(event.target as Node)
+      ) {
+        isDropdownOpen.value = false;
+      }
+    };
+
+    onMounted(() => {
+      window.addEventListener("click", closeDropdownOnOutsideClick);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener("click", closeDropdownOnOutsideClick);
+    });
 
     onMounted(() => {
       const token = getUserToken();
@@ -151,7 +216,17 @@ export default defineComponent({
       }
     };
 
-    return { profilePicture, isLogin, userData, isLoadingOpen, prefixImg };
+    return {
+      profilePicture,
+      isLogin,
+      userData,
+      isLoadingOpen,
+      prefixImg,
+      toggleDropdown,
+      isDropdownOpen,
+      dropdownContainer,
+      dotsContainer,
+    };
   },
   computed: {
     showNavbar() {
@@ -170,5 +245,9 @@ export default defineComponent({
   font-family: "Rubik", sans-serif;
   list-style-type: none;
   text-decoration: none !important;
+}
+
+.rightBarWidth {
+  width: -webkit-fill-available;
 }
 </style>

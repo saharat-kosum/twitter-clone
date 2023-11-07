@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2 w-[350px]">
+  <div class="mt-2 max-w-[350px] rightBarWidth">
     <form class="h-14">
       <label
         for="default-search"
@@ -59,4 +59,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.rightBarWidth {
+  width: -webkit-fill-available;
+}
+</style>
