@@ -36,7 +36,7 @@
         />
       </div>
     </form>
-    <SuggestionFreinds />
+    <SuggestionFreinds :loading="loading" />
   </div>
 </template>
 
@@ -46,9 +46,15 @@ import SuggestionFreinds from "../components/SuggestionFriends.vue";
 
 export default defineComponent({
   name: "RightBarComponent",
+  props: {
+    loading: {
+      type: Function,
+      required: true,
+    },
+  },
   components: { SuggestionFreinds },
-  setup() {
-    return {};
+  setup(props) {
+    return { props };
   },
 });
 </script>
