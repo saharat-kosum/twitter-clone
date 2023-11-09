@@ -3,13 +3,15 @@
     class="flex justify-center bg-black text-white min-h-screen"
     :class="{ 'w-screen': !showNavbar }"
   >
-    <div :class="{ 'relative xl:w-64 w-14': showNavbar }">
+    <div :class="{ 'md:relative xl:w-64 w-20 fixed bottom-0': showNavbar }">
       <nav
         v-if="showNavbar && isLogin"
-        class="flex flex-col justify-between py-2 xl:w-64 fixed h-screen items-center"
+        class="flex flex-col justify-between md:py-2 xl:w-64 md:fixed md:h-screen items-center"
       >
-        <div>
-          <router-link to="/home">
+        <div
+          class="flex w-screen justify-around bg-black border-solid border-t border-[#2F3336] md:block md:border-none md:bg-inherit md:w-auto"
+        >
+          <router-link to="/home" class="hidden md:inline">
             <div class="hover:bg-white/[0.13] w-fit p-3 rounded-full">
               <img class="w-7" src="../src/assets/logo-white.png" />
             </div>
@@ -46,7 +48,7 @@
               <span class="mx-4 hidden xl:inline">Messages</span>
             </div>
           </router-link>
-          <router-link to="#">
+          <router-link to="#" class="hidden md:inline">
             <div
               class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
             >
@@ -54,7 +56,7 @@
               <span class="mx-4 hidden xl:inline">Lists</span>
             </div>
           </router-link>
-          <router-link to="#">
+          <router-link to="#" class="hidden md:inline">
             <div
               class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
             >
@@ -62,7 +64,7 @@
               <span class="mx-4 hidden xl:inline">Bookmarks</span>
             </div>
           </router-link>
-          <router-link to="#">
+          <router-link to="#" class="hidden md:inline">
             <div
               class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
             >
@@ -70,7 +72,7 @@
               <span class="mx-4 hidden xl:inline">Communities</span>
             </div>
           </router-link>
-          <router-link to="#">
+          <router-link to="#" class="hidden md:inline">
             <div
               class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
             >
@@ -78,7 +80,10 @@
               <span class="mx-4 hidden xl:inline">Premium</span>
             </div>
           </router-link>
-          <router-link :to="'/profile/' + userData?._id">
+          <router-link
+            :to="'/profile/' + userData?._id"
+            class="hidden md:inline"
+          >
             <div
               class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
             >
@@ -86,7 +91,7 @@
               <span class="mx-4 hidden xl:inline">Profile</span>
             </div>
           </router-link>
-          <router-link to="#">
+          <router-link to="#" class="hidden md:inline">
             <div
               class="hover:bg-white/[0.13] w-fit p-3 rounded-full xl:text-xl text-[26px]"
             >
@@ -96,7 +101,9 @@
           </router-link>
         </div>
         <div
-          class="rightBarWidth flex justify-between hover:bg-white/[0.13] hover:cursor-pointer p-3 rounded-full text-xl items-center"
+          class="rightBarWidth hidden md:flex relative justify-between hover:bg-white/[0.13] hover:cursor-pointer p-3 rounded-full text-xl items-center"
+          @click="toggleDropdown"
+          ref="dotsContainer"
         >
           <div class="capitalize hover:cursor-pointer flex items-center">
             <img
@@ -115,24 +122,20 @@
               {{ userData?.firstName + " " + userData?.lastName }}
             </span>
           </div>
-          <div class="relative hidden xl:inline">
-            <div
-              class="rounded-full text-[#71767C] hover:cursor-pointer hover:text-[#1A8CD8]"
-              @click="toggleDropdown"
-              ref="dotsContainer"
-            >
-              <i class="bi bi-three-dots"></i>
-            </div>
-            <div
-              class="absolute right-0 -top-20"
-              :class="{ hidden: !isDropdownOpen }"
-              ref="dropdownContainer"
-            >
-              <ul>
-                <li>item1</li>
-                <li>item2</li>
-              </ul>
-            </div>
+          <div
+            class="absolute right-0 -top-20"
+            :class="{ hidden: !isDropdownOpen }"
+            ref="dropdownContainer"
+          >
+            <ul>
+              <li>item1</li>
+              <li>item2</li>
+            </ul>
+          </div>
+          <div
+            class="rounded-full hidden xl:inline text-[#71767C] hover:cursor-pointer hover:text-[#1A8CD8]"
+          >
+            <i class="bi bi-three-dots"></i>
           </div>
         </div>
       </nav>
