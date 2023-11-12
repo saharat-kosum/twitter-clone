@@ -22,7 +22,7 @@
               {{ post?.firstName + " " + post?.lastName }}
             </div>
           </router-link>
-          <div class="text-[#71767C]">{{ createDate }}</div>
+          <div class="text-[#71767C] sm:block hidden">{{ createDate }}</div>
         </div>
         <div class="relative">
           <div
@@ -33,20 +33,34 @@
             <i class="bi bi-three-dots"></i>
           </div>
           <div
-            class="absolute right-0"
+            class="absolute z-10 right-0 hover:cursor-pointer draopDownShadow bg-white divide-y divide-gray-100 rounded-lg shadow w-32 dark:bg-[#16181C]"
             :class="{ hidden: !isDropdownOpen }"
             ref="dropdownContainer"
           >
-            <ul>
-              <li>item1</li>
-              <li>item2</li>
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+              <li
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Follow
+              </li>
+              <li
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Unfollow
+              </li>
+              <li
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="deletePost(post._id)"
+              >
+                Delete Post
+              </li>
             </ul>
           </div>
         </div>
       </div>
       <div class="ms-2">{{ post?.description }}</div>
       <img
-        class="mt-2 rounded-3xl border-solid border border-[#2F3336]"
+        class="mt-2 mb-2 rounded-3xl border-solid border border-[#2F3336]"
         v-if="post?.picturePath"
         :src="prefixImg + post.picturePath"
       />
@@ -67,9 +81,12 @@
           </div>
           <div
             class="p-2 rounded-full hover:bg-[#DE1673]/[0.13] hover:cursor-pointer hover:text-[#DE1673]"
+            :class="{ 'text-[#DE1673]': isLike }"
+            @click="likePost(post._id)"
           >
-            <i class="bi bi-heart"></i>
-            <span v-if="post?.likes && post?.likes.length > 0">{{
+            <i class="bi bi-heart" v-if="!isLike"></i>
+            <i class="bi bi-heart-fill" v-else></i>
+            <span class="ms-2" v-if="post?.likes && post?.likes.length > 0">{{
               post.likes.length
             }}</span>
           </div>
@@ -98,7 +115,7 @@ import {
   ref,
   watch,
 } from "vue";
-import { PostType } from "../type";
+import { PostType, UserType } from "../type";
 
 export default defineComponent({
   name: "PostComponent",
@@ -107,12 +124,25 @@ export default defineComponent({
       type: Object as PropType<PostType>,
       required: true,
     },
+    user: {
+      type: Object as PropType<UserType>,
+      required: true,
+    },
+    deletePost: {
+      type: Function,
+      required: true,
+    },
+    likePost: {
+      type: Function,
+      required: true,
+    },
   },
   setup(props) {
     const profilePicture = process.env.VUE_APP_PROFILE_IMG;
     const prefixImg = process.env.VUE_APP_PREFIX_URL_IMG;
     const createDate = ref("");
     const isDropdownOpen = ref(false);
+    const isLike = ref(false);
     const dotsContainer = ref<HTMLDivElement | null>(null);
     const dropdownContainer = ref<HTMLDivElement | null>(null);
 
@@ -159,6 +189,16 @@ export default defineComponent({
       { immediate: true }
     );
 
+    watch(
+      () => props.post?.likes,
+      (newVal) => {
+        if (newVal && props.user._id) {
+          isLike.value = newVal.includes(props.user._id);
+        }
+      },
+      { immediate: true }
+    );
+
     return {
       profilePicture,
       props,
@@ -168,9 +208,15 @@ export default defineComponent({
       toggleDropdown,
       dotsContainer,
       dropdownContainer,
+      isLike,
     };
   },
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.draopDownShadow {
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px,
+    rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
+}
+</style>

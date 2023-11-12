@@ -1,22 +1,25 @@
 <template>
   <div class="flex py-3 px-5 border-solid border-b border-[#2F3336]">
-    <img
-      v-if="userData?.picturePath"
-      class="objectFit w-9 h-9 me-2 rounded-full mt-1"
-      alt="profile"
-      :src="prefixImg + userData?.picturePath"
-    />
-    <img
-      v-else
-      class="objectFit w-9 h-9 me-2 rounded-full mt-1"
-      alt="profile"
-      :src="profilePicture"
-    />
+    <router-link :to="'/profile/' + userData?._id">
+      <img
+        v-if="userData?.picturePath"
+        class="objectFit w-9 h-9 me-2 rounded-full mt-1"
+        alt="profile"
+        :src="prefixImg + userData?.picturePath"
+      />
+      <img
+        v-else
+        class="objectFit w-9 h-9 me-2 rounded-full mt-1"
+        alt="profile"
+        :src="profilePicture"
+      />
+    </router-link>
     <div class="flex-1">
       <input
         type="text"
         placeholder="What is happening?!"
         class="w-full mb-3 leading-none bg-inherit border-none focus:ring-0"
+        v-model="description"
       />
       <div v-if="imageFile" class="relative">
         <i
@@ -42,12 +45,12 @@
             />
           </div>
           <div
-            class="p-2 rounded-full hover:bg-[#1A8CD8]/[0.13] hover:cursor-pointer"
+            class="p-2 rounded-full hover:bg-[#1A8CD8]/[0.13] hover:cursor-pointer sm:block hidden"
           >
             <i class="bi bi-filetype-gif"></i>
           </div>
           <div
-            class="p-2 rounded-full hover:bg-[#1A8CD8]/[0.13] hover:cursor-pointer"
+            class="p-2 rounded-full hover:bg-[#1A8CD8]/[0.13] hover:cursor-pointer sm:block hidden"
           >
             <i class="bi bi-list-ul"></i>
           </div>
@@ -62,7 +65,7 @@
             <i class="bi bi-calendar-week"></i>
           </div>
           <div
-            class="p-2 rounded-full hover:bg-[#1A8CD8]/[0.13] hover:cursor-pointer"
+            class="p-2 rounded-full hover:bg-[#1A8CD8]/[0.13] hover:cursor-pointer sm:block hidden"
           >
             <i class="bi bi-geo-alt"></i>
           </div>
@@ -177,6 +180,7 @@ export default defineComponent({
       handlePost,
       imageFile,
       prefixImg,
+      description,
     };
   },
 });

@@ -123,13 +123,24 @@
             </span>
           </div>
           <div
-            class="absolute right-0 -top-20"
+            class="absolute right-0 -top-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-32 dark:bg-[#16181C] draopDownShadow"
             :class="{ hidden: !isDropdownOpen }"
             ref="dropdownContainer"
           >
-            <ul>
-              <li>item1</li>
-              <li>item2</li>
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+              <router-link :to="'/profile/' + userData?._id">
+                <li
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Profile
+                </li>
+              </router-link>
+              <li
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                @click="logOutHandle"
+              >
+                Log out
+              </li>
             </ul>
           </div>
           <div
@@ -150,6 +161,7 @@ import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { UserType } from "./type";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "App",
@@ -163,6 +175,7 @@ export default defineComponent({
     const isDropdownOpen = ref(false);
     const dotsContainer = ref<HTMLDivElement | null>(null);
     const dropdownContainer = ref<HTMLDivElement | null>(null);
+    const router = useRouter();
 
     const toggleDropdown = () => {
       isDropdownOpen.value = !isDropdownOpen.value;
@@ -219,6 +232,11 @@ export default defineComponent({
       }
     };
 
+    const logOutHandle = () => {
+      sessionStorage.removeItem("userToken");
+      router.push("/");
+    };
+
     return {
       profilePicture,
       isLogin,
@@ -229,6 +247,7 @@ export default defineComponent({
       isDropdownOpen,
       dropdownContainer,
       dotsContainer,
+      logOutHandle,
     };
   },
   computed: {
@@ -252,5 +271,10 @@ export default defineComponent({
 
 .rightBarWidth {
   width: -webkit-fill-available;
+}
+
+.draopDownShadow {
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px,
+    rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
 }
 </style>
