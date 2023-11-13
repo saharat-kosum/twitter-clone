@@ -27,6 +27,7 @@
       </button>
       <button
         v-else-if="isFollow"
+        @click="removeFriend(friendData._id)"
         type="button"
         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-3.5 py-2 dark:bg-black dark:text-white dark:border-gray-600 dark:hover:bg-white/[0.1] dark:hover:border-gray-600 dark:focus:ring-gray-700"
       >
@@ -34,6 +35,7 @@
       </button>
       <button
         v-else
+        @click="addFriend(friendData._id)"
         type="button"
         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-3.5 py-2 dark:bg-black dark:text-white dark:border-gray-600 dark:hover:bg-white/[0.1] dark:hover:border-gray-600 dark:focus:ring-gray-700"
       >
@@ -72,6 +74,14 @@ export default defineComponent({
     },
     isSameUser: Boolean,
     isFollow: Boolean,
+    addFriend: {
+      type: Function,
+      required: true,
+    },
+    removeFriend: {
+      type: Function,
+      required: true,
+    },
   },
   setup() {
     const coverImg = process.env.VUE_APP_COVER_IMG;

@@ -50,6 +50,8 @@
               :deletePost="deletePost"
               :likePost="likePost"
               :user="user"
+              :addFriend="addFriend"
+              :removeFriend="removeFriend"
             />
           </div>
           <div
@@ -76,6 +78,8 @@
               :deletePost="deletePost"
               :likePost="likePost"
               :user="user"
+              :addFriend="addFriend"
+              :removeFriend="removeFriend"
             />
           </div>
           <div
@@ -261,6 +265,46 @@ export default defineComponent({
       });
     };
 
+    const addFriend = async (friendId: string) => {
+      isLoadingOpen.value = true;
+      const token = getUserToken();
+      try {
+        const response = await axios.put(
+          `${prefixURL}/users/${user.value?._id}/${friendId}`,
+          { userId: user.value?._id },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.error(error);
+      } finally {
+        isLoadingOpen.value = false;
+      }
+    };
+
+    const removeFriend = async (friendId: string) => {
+      isLoadingOpen.value = true;
+      const token = getUserToken();
+      try {
+        const response = await axios.put(
+          `${prefixURL}/users/${user.value?._id}/${friendId}`,
+          { userId: user.value?._id },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.error(error);
+      } finally {
+        isLoadingOpen.value = false;
+      }
+    };
+
     return {
       activeTab,
       activateTab,
@@ -274,6 +318,8 @@ export default defineComponent({
       getUserToken,
       deletePost,
       likePost,
+      removeFriend,
+      addFriend,
     };
   },
 });

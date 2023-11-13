@@ -39,16 +39,19 @@
           >
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
               <li
+                v-if="!isFriend"
                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
                 Follow
               </li>
               <li
+                v-else
                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
                 Unfollow
               </li>
               <li
+                v-if="isYourPost"
                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 @click="deletePost(post._id)"
               >
@@ -108,6 +111,7 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
   onMounted,
   onUnmounted,
@@ -136,6 +140,14 @@ export default defineComponent({
       type: Function,
       required: true,
     },
+    addFriend: {
+      type: Function,
+      required: true,
+    },
+    removeFriend: {
+      type: Function,
+      required: true,
+    },
   },
   setup(props) {
     const profilePicture = process.env.VUE_APP_PROFILE_IMG;
@@ -143,6 +155,8 @@ export default defineComponent({
     const createDate = ref("");
     const isDropdownOpen = ref(false);
     const isLike = ref(false);
+    const isFriend = ref(false);
+    const isYourPost = computed(() => props.user._id === props.post.userId);
     const dotsContainer = ref<HTMLDivElement | null>(null);
     const dropdownContainer = ref<HTMLDivElement | null>(null);
 
@@ -199,6 +213,16 @@ export default defineComponent({
       { immediate: true }
     );
 
+    watch(
+      () => props.user?.friends,
+      (newVal) => {
+        if (newVal && props.post.userId) {
+          isFriend.value = newVal.includes(props.post.userId);
+        }
+      },
+      { immediate: true }
+    );
+
     return {
       profilePicture,
       props,
@@ -209,6 +233,8 @@ export default defineComponent({
       dotsContainer,
       dropdownContainer,
       isLike,
+      isFriend,
+      isYourPost,
     };
   },
 });
