@@ -324,6 +324,7 @@ export default defineComponent({
       isLoadingOpen.value = true;
       const token = getUserToken();
       try {
+        // eslint-disable-next-line
         const response = await axios.put(
           `${prefixURL}/users/${user.value?._id}/${friendId}`,
           { userId: user.value?._id },
@@ -344,6 +345,7 @@ export default defineComponent({
       isLoadingOpen.value = true;
       const token = getUserToken();
       try {
+        // eslint-disable-next-line
         const response = await axios.put(
           `${prefixURL}/users/${user.value?._id}/${friendId}`,
           { userId: user.value?._id },

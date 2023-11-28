@@ -13,7 +13,7 @@
                 'text-white font-semibold border-[#1A8CD8] border-b-2':
                   activeTab === 1,
               }"
-              @click="activateTab(1)"
+              @click="activateTab(1), getAllPosts(getUserToken())"
             >
               For you
             </button>
@@ -25,7 +25,7 @@
                 'text-white font-semibold border-[#1A8CD8]': activeTab === 2,
                 'border-transparent': activeTab === 1,
               }"
-              @click="activateTab(2)"
+              @click="activateTab(2), getFeedPosts(getUserToken())"
             >
               Following
             </button>
@@ -136,7 +136,7 @@ export default defineComponent({
       const token = getUserToken();
       if (token) {
         isLogin.value = true;
-        getFeedPosts(token);
+        getAllPosts(token);
         getUserDetail(token);
       }
     });
@@ -154,6 +154,24 @@ export default defineComponent({
       isLoadingOpen.value = true;
       try {
         const response = await axios.get(`${prefixURL}/posts`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = response.data;
+        const sortData = sortPost(data);
+        posts.value = sortData;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        isLoadingOpen.value = false;
+      }
+    };
+
+    const getAllPosts = async (token: string) => {
+      isLoadingOpen.value = true;
+      try {
+        const response = await axios.get(`${prefixURL}/posts/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -269,6 +287,7 @@ export default defineComponent({
       isLoadingOpen.value = true;
       const token = getUserToken();
       try {
+        // eslint-disable-next-line
         const response = await axios.put(
           `${prefixURL}/users/${user.value?._id}/${friendId}`,
           { userId: user.value?._id },
@@ -289,6 +308,7 @@ export default defineComponent({
       isLoadingOpen.value = true;
       const token = getUserToken();
       try {
+        // eslint-disable-next-line
         const response = await axios.put(
           `${prefixURL}/users/${user.value?._id}/${friendId}`,
           { userId: user.value?._id },
@@ -320,6 +340,8 @@ export default defineComponent({
       likePost,
       removeFriend,
       addFriend,
+      getFeedPosts,
+      getAllPosts,
     };
   },
 });
