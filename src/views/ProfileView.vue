@@ -104,7 +104,12 @@
         </div>
       </div>
     </div>
-    <RightBarComponent class="hidden lg:block" :loading="setLoading" />
+    <RightBarComponent
+      v-if="token"
+      class="hidden lg:block"
+      :loading="setLoading"
+      :token="token"
+    />
   </div>
 </template>
 
@@ -137,6 +142,7 @@ export default defineComponent({
     const user = ref<UserType | undefined>(undefined);
     const friendData = ref<UserType | undefined>(undefined);
     const friendId = computed(() => route.params.id as string);
+    const token = computed(() => getUserToken());
     const isFollow = computed(() => {
       if (user.value && friendData.value?._id && user.value.friends) {
         return user.value.friends.includes(friendData.value._id);
@@ -377,6 +383,7 @@ export default defineComponent({
       user,
       addFriend,
       removeFriend,
+      token,
     };
   },
 });

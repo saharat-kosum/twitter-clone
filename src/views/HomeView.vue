@@ -13,7 +13,8 @@
                 'text-white font-semibold border-[#1A8CD8] border-b-2':
                   activeTab === 1,
               }"
-              @click="activateTab(1), getAllPosts(getUserToken())"
+              v-if="token"
+              @click="activateTab(1), getAllPosts(token)"
             >
               For you
             </button>
@@ -25,7 +26,8 @@
                 'text-white font-semibold border-[#1A8CD8]': activeTab === 2,
                 'border-transparent': activeTab === 1,
               }"
-              @click="activateTab(2), getFeedPosts(getUserToken())"
+              v-if="token"
+              @click="activateTab(2), getFeedPosts(token)"
             >
               Following
             </button>
@@ -91,12 +93,17 @@
         </div>
       </div>
     </div>
-    <RightBarComponent class="hidden lg:block" :loading="setLoading" />
+    <RightBarComponent
+      v-if="token"
+      class="hidden lg:block"
+      :loading="setLoading"
+      :token="token"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import RightBarComponent from "../components/RightBar.vue";
 import CreatePost from "../components/CreatePost.vue";
 import PostComponent from "../components/Post.vue";
@@ -119,6 +126,7 @@ export default defineComponent({
     const posts = ref<PostType[] | undefined>(undefined);
     const user = ref<UserType | undefined>(undefined);
     const prefixURL = process.env.VUE_APP_PREFIX_URL;
+    const token = computed(() => getUserToken());
 
     const activateTab = (tabNumber: number) => {
       activeTab.value = tabNumber;
@@ -342,6 +350,7 @@ export default defineComponent({
       addFriend,
       getFeedPosts,
       getAllPosts,
+      token,
     };
   },
 });
