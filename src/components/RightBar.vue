@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import axios from "axios";
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref } from "vue";
 import SuggestionFreinds from "../components/SuggestionFriends.vue";
 import { UserType } from "../type";
 

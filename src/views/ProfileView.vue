@@ -340,6 +340,7 @@ export default defineComponent({
             },
           }
         );
+        window.location.reload();
       } catch (error) {
         console.error(error);
       } finally {
@@ -361,6 +362,7 @@ export default defineComponent({
             },
           }
         );
+        window.location.reload();
       } catch (error) {
         console.error(error);
       } finally {

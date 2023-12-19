@@ -3,13 +3,13 @@
     <router-link :to="'/profile/' + userData?._id">
       <img
         v-if="userData?.picturePath"
-        class="objectFit w-9 h-9 me-2 rounded-full mt-1"
+        class="object-cover w-9 h-9 me-2 rounded-full mt-1"
         alt="profile"
         :src="prefixImg + userData?.picturePath"
       />
       <img
         v-else
-        class="objectFit w-9 h-9 me-2 rounded-full mt-1"
+        class="object-cover w-9 h-9 me-2 rounded-full mt-1"
         alt="profile"
         :src="profilePicture"
       />
